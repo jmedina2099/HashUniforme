@@ -25,7 +25,7 @@ public class HashIteradaRandomBits implements FuncionHash {
 			hash = Integer.MAX_VALUE + hash;
 		}
 		
-		return hash % PRIME;
+		return hash; // Devuelve el hash sin hacer módulo del tamaño de la tabla.
 	}
 	
 
@@ -33,51 +33,61 @@ public class HashIteradaRandomBits implements FuncionHash {
 
 		int hash = 0;
 		int char1,char2,char3,char4,char5;
+		int sumaAnt1 = 0;
+		int sumaAnt2 = 0;
 
 		char1 = (int)o.charAt( o.length()-2 );
 		char2 = (int)o.charAt( o.length()-1 );
 		char3 = (int)o.charAt( 0 );
 		char4 = (int)o.charAt( 1 );
 		char5 = (int)o.charAt( 2 );
-		hash += evaluaFuncBool( char1,char2,char3,char4,char5);
+		sumaAnt2 = evaluaFuncBool( char1,char2,char3,char4,char5);
+		hash += sumaAnt2;
 
 		char1 = (int)o.charAt( o.length()-1 );
 		char2 = (int)o.charAt( 0 );
 		char3 = (int)o.charAt( 1 );
 		char4 = (int)o.charAt( 2 );
-		char5 = (int)o.charAt( 3 );
-		hash += evaluaFuncBool( char1,char2,char3,char4,char5);
+		char5 = sumaAnt2;
+		sumaAnt1 = evaluaFuncBool( char1,char2,char3,char4,char5);
+		hash += sumaAnt1;
 
 		// Main Loop.
 		for( int i=2; i<o.length()-2; i++ ) {
-			char1 = (int)o.charAt( i-2 );
+			char1 = sumaAnt1;
 			char2 = (int)o.charAt( i-1 );
 			char3 = (int)o.charAt( i );
 			char4 = (int)o.charAt( i+1 );
-			char5 = (int)o.charAt( i+2 );
-			hash += evaluaFuncBool( char1,char2,char3,char4,char5);
+			char5 = sumaAnt2;
+			sumaAnt2 = sumaAnt1;			
+			sumaAnt1 = evaluaFuncBool( char1,char2,char3,char4,char5);
+			hash += sumaAnt1;
 		}
 
-		char1 = (int)o.charAt( o.length()-4 );
+		char1 = sumaAnt1;
 		char2 = (int)o.charAt( o.length()-3 );
 		char3 = (int)o.charAt( o.length()-2 );
 		char4 = (int)o.charAt( o.length()-1 );
-		char5 = (int)o.charAt( 0 );
-		hash += evaluaFuncBool( char1,char2,char3,char4,char5);
+		char5 = sumaAnt2;
+		sumaAnt2 = sumaAnt1;
+		sumaAnt1 = evaluaFuncBool( char1,char2,char3,char4,char5);
+		hash += sumaAnt1;
 
-		char1 = (int)o.charAt( o.length()-3 );
+		char1 = sumaAnt1;
 		char2 = (int)o.charAt( o.length()-2 );
 		char3 = (int)o.charAt( o.length()-1 );
 		char4 = (int)o.charAt( 0 );
-		char5 = (int)o.charAt( 1 );
-		hash += evaluaFuncBool( char1,char2,char3,char4,char5);
+		char5 = sumaAnt2;
+		sumaAnt2 = sumaAnt1;
+		sumaAnt1 = evaluaFuncBool( char1,char2,char3,char4,char5);
+		hash += sumaAnt1;
 
 		
 		if( hash < 0 ) {
 			hash = Integer.MAX_VALUE + hash;			
 		}
 
-		return hash %=	PRIME;	
+		return hash;	
 	}
 	
 	public int evaluaFuncBool(Integer char1, Integer char2, Integer char3, Integer char4, Integer char5) {
