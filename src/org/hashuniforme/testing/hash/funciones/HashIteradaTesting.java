@@ -3,16 +3,12 @@
  */
 package org.hashuniforme.testing.hash.funciones;
 
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 
 /**
  * @author "Jorge Medina"
  *
  */
-public class HashIteradaTesting implements FuncionHashTesting {
-
-	private static int PRIME = 101;
+public class HashIteradaTesting implements HashIterativeBooleanTesting {
 
 	/**
 	 * 
@@ -20,31 +16,19 @@ public class HashIteradaTesting implements FuncionHashTesting {
 	public HashIteradaTesting() {
 	}
 	
-	/**
-	 * 
-	 * @param prime
-	 */
-	public HashIteradaTesting( int prime ) {
-		PRIME = prime;
-	}
-
 	@Override
 	public int getHash(String o, int oper1, int oper2, int oper3, int oper4) {
 		int hash = 0;
 		try {
 			hash = getHashEval( o,oper1,oper2,oper3,oper4 );
-			//hash += getHash( o, this.getClass().getMethod( "evaluaFuncBool2", Integer.class,Integer.class,Integer.class,Integer.class,Integer.class ) );
-			//hash += getHash( o, this.getClass().getMethod( "evaluaFuncBool3", Integer.class,Integer.class,Integer.class,Integer.class,Integer.class ) );
-			//hash += getHash( o, this.getClass().getMethod( "evaluaFuncBool4", Integer.class,Integer.class,Integer.class,Integer.class,Integer.class ) );
-			//hash += o.hashCode();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		if( hash < 0 ) {
-			hash = ~hash;
+			hash = Integer.MAX_VALUE + hash;
 		}
 		
-		return hash % PRIME;
+		return hash;
 	}
 	
 
@@ -52,65 +36,58 @@ public class HashIteradaTesting implements FuncionHashTesting {
 
 		int hash = 0;
 		int char1,char2,char3,char4,char5;
+		int sumaAnt1 = (int)o.charAt( o.length()-2 );
+		int sumaAnt2 = (int)o.charAt( 2 );
 
-		char1 = (int)o.charAt( o.length()-2 );
+		char1 = sumaAnt1;
 		char2 = (int)o.charAt( o.length()-1 );
 		char3 = (int)o.charAt( 0 );
 		char4 = (int)o.charAt( 1 );
-		char5 = (int)o.charAt( 2 );
-		hash += evaluaFuncBool1( char1,char2,char3,char4,char5,oper1,oper2,oper3,oper4 );
-		//hash += evaluaFuncBool2( char1,char2,char3,char4,char5 );
-		//hash += evaluaFuncBool3( char1,char2,char3,char4,char5 );
-		//hash += evaluaFuncBool4( char1,char2,char3,char4,char5 );
+		char5 = sumaAnt2;
+		sumaAnt2 = sumaAnt1;
+		sumaAnt1 = evaluaFuncBool1( char1,char2,char3,char4,char5,oper1,oper2,oper3,oper4 );
+		hash += sumaAnt1;
 
-		char1 = (int)o.charAt( o.length()-1 );
+		char1 = sumaAnt1;
 		char2 = (int)o.charAt( 0 );
 		char3 = (int)o.charAt( 1 );
 		char4 = (int)o.charAt( 2 );
-		char5 = (int)o.charAt( 3 );
-		hash += evaluaFuncBool1( char1,char2,char3,char4,char5,oper1,oper2,oper3,oper4 );
-		//hash += evaluaFuncBool2( char1,char2,char3,char4,char5 );
-		//hash += evaluaFuncBool3( char1,char2,char3,char4,char5 );
-		//hash += evaluaFuncBool4( char1,char2,char3,char4,char5 );
+		char5 = sumaAnt2;
+		sumaAnt2 = sumaAnt1;
+		sumaAnt1 = evaluaFuncBool1( char1,char2,char3,char4,char5,oper1,oper2,oper3,oper4 );
+		hash += sumaAnt1;
 
-		// Loop!
+		// Main Loop.
 		for( int i=2; i<o.length()-2; i++ ) {
-			char1 = (int)o.charAt( i-2 );
+			char1 = sumaAnt1;
 			char2 = (int)o.charAt( i-1 );
 			char3 = (int)o.charAt( i );
 			char4 = (int)o.charAt( i+1 );
-			char5 = (int)o.charAt( i+2 );
-			hash += evaluaFuncBool1( char1,char2,char3,char4,char5,oper1,oper2,oper3,oper4 );
-			//hash += evaluaFuncBool2( char1,char2,char3,char4,char5 );
-			//hash += evaluaFuncBool3( char1,char2,char3,char4,char5 );
-			//hash += evaluaFuncBool4( char1,char2,char3,char4,char5 );
+			char5 = sumaAnt2;
+			sumaAnt2 = sumaAnt1;
+			sumaAnt1 = evaluaFuncBool1( char1,char2,char3,char4,char5,oper1,oper2,oper3,oper4 );
+			hash += sumaAnt1;
 		}
 
-		char1 = (int)o.charAt( o.length()-4 );
+		char1 = sumaAnt1;
 		char2 = (int)o.charAt( o.length()-3 );
 		char3 = (int)o.charAt( o.length()-2 );
 		char4 = (int)o.charAt( o.length()-1 );
-		char5 = (int)o.charAt( 0 );
-		hash += evaluaFuncBool1( char1,char2,char3,char4,char5,oper1,oper2,oper3,oper4 );
-		//hash += evaluaFuncBool2( char1,char2,char3,char4,char5 );
-		//hash += evaluaFuncBool3( char1,char2,char3,char4,char5 );
-		//hash += evaluaFuncBool4( char1,char2,char3,char4,char5 );
+		char5 = sumaAnt2;
+		sumaAnt2 = sumaAnt1;
+		sumaAnt1 = evaluaFuncBool1( char1,char2,char3,char4,char5,oper1,oper2,oper3,oper4 );
+		hash += sumaAnt1;
 
-		char1 = (int)o.charAt( o.length()-3 );
+		char1 = sumaAnt1;
 		char2 = (int)o.charAt( o.length()-2 );
 		char3 = (int)o.charAt( o.length()-1 );
 		char4 = (int)o.charAt( 0 );
-		char5 = (int)o.charAt( 1 );
-		hash += evaluaFuncBool1( char1,char2,char3,char4,char5,oper1,oper2,oper3,oper4);
-		//hash += evaluaFuncBool2( char1,char2,char3,char4,char5 );
-		//hash += evaluaFuncBool3( char1,char2,char3,char4,char5 );
-		//hash += evaluaFuncBool4( char1,char2,char3,char4,char5 );
+		char5 = sumaAnt2;
+		sumaAnt2 = sumaAnt1;
+		sumaAnt1 = evaluaFuncBool1( char1,char2,char3,char4,char5,oper1,oper2,oper3,oper4);
+		hash += sumaAnt1;
 		
-		if( hash < 0 ) {
-			hash = ~hash;			
-		}
-
-		return hash %=	PRIME;	
+		return hash;	
 	}
 
 	public int evaluaFuncBool1(Integer char1, Integer char2, Integer char3, Integer char4, Integer char5,

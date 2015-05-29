@@ -8,8 +8,8 @@ import java.util.Random;
 import java.util.Set;
 import java.util.TreeMap;
 
-import org.hashuniforme.testing.hash.funciones.FuncionHashTesting;
 import org.hashuniforme.testing.hash.funciones.HashIteradaTesting;
+import org.hashuniforme.testing.hash.funciones.HashIterativeBooleanTesting;
 import org.hashuniforme.testing.hash.tabla.TablaHashTesting;
 
 /**
@@ -23,13 +23,8 @@ public final class MainTesting {
 	 */
 	public static void main(String[] args) {
 		
-		
-		
 		long timeIni = System.currentTimeMillis();
-		System.out.println( "START "+(int)'A'+" / "+(int)'Z' );
-		
-		int vacias;
-		
+				
 		Comparator<Object[]> comparator = new Comparator<Object[]>() {
 
 			@Override
@@ -43,6 +38,7 @@ public final class MainTesting {
 
 		};
 		TreeMap<Object[],String> funciones = new TreeMap<Object[],String>(comparator ) {
+			private static final long serialVersionUID = -249167753892625557L;
 			@Override
 			public String toString() {
 				StringBuilder sb = new StringBuilder(); 
@@ -61,6 +57,8 @@ public final class MainTesting {
 		int oper1=0,oper2=0,oper3=0,oper4=0;
 		
 		int total = 0;
+		int colisiones;
+
 		String cadena;
 		try {
 			
@@ -68,10 +66,10 @@ public final class MainTesting {
 				for( oper2=0; oper2<4; oper2++) {
 					for( oper3=0; oper3<4; oper3++) {
 						for( oper4=0; oper4<4; oper4++) {
-							vacias = executeTest( oper1,oper2,oper3,oper4 );
+							colisiones = executeTest( oper1,oper2,oper3,oper4 );
 							cadena = "("+oper1+","+oper2+","+oper3+","+oper4+")";
-							funciones.put( new Object[]{vacias,cadena},cadena );
-							System.out.println( "VACIAS="+vacias+"-"+cadena );
+							funciones.put( new Object[]{colisiones,cadena},cadena );
+							System.out.println( "COLISIONES="+colisiones+"-"+cadena );
 							total++;
 							
 							//if(total == 3)
@@ -95,47 +93,47 @@ public final class MainTesting {
 
 	public static int executeTest(int oper1, int oper2, int oper3, int oper4) {
 		int prime = 1009;
-		int iteraciones = 100;
 		
-		FuncionHashTesting funcionHash = new HashIteradaTesting( prime );
+		HashIterativeBooleanTesting funcionHash = new HashIteradaTesting();
 
 		//HashJava funcionHash = new HashJava( prime );
-		//FuncionHash funcionHash = new HashPrimo( prime );
+		//FuncionHash funcionHash = new HashSumaChars( prime );
 		
-		TablaHashTesting tablaHash = new TablaHashTesting( funcionHash, prime );		
+		TablaHashTesting tablaHash = new TablaHashTesting( funcionHash, prime );
 
-		//String prepend = "AAAAAAAAAAAAAAAAAAAA";
-		String prepend = getRandomBits(20);
+		byte[] bites = getRandomBites( 1000 );
 		System.out.println( "STARTIING..." );
-		System.out.println( "<"+prepend+">-["+prepend.length()+"]" );
+		//System.out.println( "<"+Arrays.toString(bites)+">-["+bites.length+"]" );
 		
-		int total = 0;
-		
-		for( int charAt3 = 0; charAt3<iteraciones; charAt3++ ) {
-			for( int charAt2 = 0; charAt2<iteraciones; charAt2++ ) {
-				for( int charAt = 0; charAt<iteraciones; charAt++ ) {
-					total++;
-					tablaHash.add( prepend+""+charAt+""+charAt2+""+charAt3
-							,oper1,oper2,oper3,oper4 );
-				}
+		byte biteAnt;
+		for( int index=0; index<bites.length; index++ ) {
+			//System.out.println( "BITES="+Integer.toBinaryString(bites[index]) );			
+			for( int offset=0; offset<8; offset++ ) {
+				biteAnt = bites[index];
+				
+				bites[index] ^= (1 << offset);
+				//System.out.println( Integer.toBinaryString(bites[index]) );
+
+				tablaHash.add( new String( bites)
+						,oper1,oper2,oper3,oper4 );
+				bites[index] = biteAnt;
 			}
 		}
+		
+		//System.out.println( tablaHash.toSizes() ); 
 
-		return tablaHash.getVacias();		
+		return tablaHash.getColisiones();
 	}
 	
-	public static String getRandomBits( int size ) {
-		StringBuilder sb = new StringBuilder(); 
+	public static byte[] getRandomBites( int size ) {
+		byte[] bites = new byte[size];
 		
 		Random random = new Random();
-		int char1;
-		
 		for( int i=0; i<size; i++ ) {
-			char1 = random.nextInt( Integer.MAX_VALUE );
-			sb.append( (char)char1 );
+			bites[i] = (byte)random.nextInt( Byte.MAX_VALUE );
 		}
 		
-		return sb.toString();
+		return bites;
 	}
 	
 }

@@ -3,7 +3,6 @@
  */
 package org.hashuniforme.hash.tabla;
 
-import java.util.ArrayList;
 import java.util.Hashtable;
 
 import org.hashuniforme.hash.funciones.FuncionHash;
@@ -14,6 +13,9 @@ import org.hashuniforme.hash.funciones.FuncionHash;
  */
 public class TablaHash {
 	
+	private static final boolean SAVE_OBJECT_IN_TABLE = false; // Generally true, false for saving memory.
+	private static final boolean DEBUG_COLISSIONS = false;
+
 	private FuncionHash funcionHash;
 	
 	private Hashtable<Integer,Object>[] tablaHash;
@@ -22,6 +24,7 @@ public class TablaHash {
 
 	private int capacity = 0;
 	
+	@SuppressWarnings("unchecked")
 	public TablaHash( FuncionHash funcionHash,
 					  int capacity ) {
 		this.capacity = capacity;
@@ -39,17 +42,23 @@ public class TablaHash {
 	public void add( Object o) {
 		String objeto = o.toString();
 		int hash = this.funcionHash.getHash(objeto);
-		int hashMod = hash % capacity;
+		int hashMod = hash % capacity; // Index of the array for insertion.
 		
 		//System.out.println( "HASH="+hash );
 		
 		Object obj;
 		if( hashMod < tablaHash.length ) {
-			if( (obj=this.tablaHash[hashMod].get(hash))!=null ) {
+			if( (obj=this.tablaHash[hashMod].get(hash))!=null ) { // Collision, dude!.
 				this.sizesColisiones[hashMod]++;
-				//System.out.println( "HASH="+ hash +"/ OBJECT="+objeto+" / OBJ="+obj );
+				if( DEBUG_COLISSIONS ) {
+					System.out.println( "Colision-HASH="+ hash +"/ OBJECT="+objeto+" / OBJ="+obj );
+				}
 			} else {
-				this.tablaHash[hashMod].put( hash, objeto );
+				if( SAVE_OBJECT_IN_TABLE ) {
+					this.tablaHash[hashMod].put( hash, objeto );
+				} else {
+					this.tablaHash[hashMod].put( hash, hash );
+				}
 			}
 			this.sizesCasillas[hashMod]++;			
 		} else {
@@ -84,25 +93,4 @@ public class TablaHash {
 		return "\nOCUPADAS="+ocupadas+"\nVACIAS="+vacias;
 	}
 	
-	@Override
-	public String toString() {
-		String toString = "";
-		int size;
-		int vacias = 0;
-		int ocupadas = 0;
-		for( int i=0; i<tablaHash.length; i++ ) {
-			size = tablaHash[i].size();
-			if( size == 0 ) {
-				System.out.println( tablaHash[i].size() );
-				vacias++;
-				continue;
-			}
-			System.out.println( tablaHash[i].size() );
-			toString += tablaHash[i].toString();
-			ocupadas++;
-		}
-		
-		return toString + "\nOCUPADAS="+ocupadas+"\nVACIAS="+vacias;
-	}
-
 }

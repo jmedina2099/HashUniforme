@@ -7,7 +7,7 @@ package org.hashuniforme.testing.hash.funciones;
  * @author "Jorge Medina"
  *
  */
-public interface FuncionHashTesting {
+public interface HashIterativeBooleanTesting {
 
 	/**
 	 * Dado un string, devuelve el hash.

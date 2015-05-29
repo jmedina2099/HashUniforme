@@ -7,23 +7,14 @@ package org.hashuniforme.hash.funciones;
  * @author "Jorge Medina"
  *
  */
-public class HashPrimo implements FuncionHash {
-
-	private static int PRIME = 101;
+public class HashSumaChars implements FuncionHash {
 
 	/**
 	 * 
 	 */
-	public HashPrimo() {
+	public HashSumaChars() {
 	}
 	
-	/**
-	 * 
-	 */
-	public HashPrimo( int prime ) {
-		PRIME = prime;
-	}
-
 	/* (non-Javadoc)
 	 * @see org.hashuniforme.hash.funciones.FuncionHash#getHash(java.lang.String)
 	 */
@@ -35,8 +26,6 @@ public class HashPrimo implements FuncionHash {
 			hash += (int)o.charAt( i );
 		}
 		
-		hash %= PRIME;
-	
 		return hash;
 	}
 }
