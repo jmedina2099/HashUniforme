@@ -74,8 +74,8 @@ public final class MainTesting {
 							System.out.println( "VACIAS="+vacias+"-"+cadena );
 							total++;
 							
-//							if(total == 3)
-//								throw new Exception();
+							//if(total == 3)
+								//throw new Exception();
 						}
 					}
 				}
@@ -105,8 +105,8 @@ public final class MainTesting {
 		TablaHashTesting tablaHash = new TablaHashTesting( funcionHash, prime );		
 
 		//String prepend = "AAAAAAAAAAAAAAAAAAAA";
-		String prepend = getRandomWord(20);
-		System.out.println( "STARTING..." );
+		String prepend = getRandomBits(20);
+		System.out.println( "STARTIING..." );
 		System.out.println( "<"+prepend+">-["+prepend.length()+"]" );
 		
 		int total = 0;
@@ -124,14 +124,14 @@ public final class MainTesting {
 		return tablaHash.getVacias();		
 	}
 	
-	public static String getRandomWord( int size ) {
+	public static String getRandomBits( int size ) {
 		StringBuilder sb = new StringBuilder(); 
 		
 		Random random = new Random();
 		int char1;
 		
 		for( int i=0; i<size; i++ ) {
-			char1 = random.nextInt( (int)'Z'-(int)'A'+1 ) + (int)'A';
+			char1 = random.nextInt( Integer.MAX_VALUE );
 			sb.append( (char)char1 );
 		}
 		
