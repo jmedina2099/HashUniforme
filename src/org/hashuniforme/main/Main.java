@@ -71,9 +71,9 @@ public final class Main {
 		int prime = 1009; //1000003;//31991;//1000003;//1009;
 		int iteraciones = 10;
 		
-		//FuncionHash funcionHash = new HashIteradaRandomBits( prime );
+		FuncionHash funcionHash = new HashIteradaRandomBits( prime );
 
-		FuncionHash funcionHash = new HashJava( prime );
+		//FuncionHash funcionHash = new HashJava( prime );
 		//FuncionHash funcionHash = new HashPrimo( prime );
 		
 		TablaHash tablaHash = new TablaHash( funcionHash, prime );

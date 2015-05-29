@@ -31,8 +31,6 @@ public class HashJava implements FuncionHash {
 			hash = ~hash;
 		}
 		
-		hash %= PRIME;
-		
 		return hash;
 	}
 
