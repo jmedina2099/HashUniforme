@@ -33,22 +33,24 @@ public class HashIteradaRandomBits implements FuncionHash {
 
 		int hash = 0;
 		int char1,char2,char3,char4,char5;
-		int sumaAnt1 = 0;
-		int sumaAnt2 = 0;
+		int sumaAnt1 = (int)o.charAt( o.length()-2 );
+		int sumaAnt2 = (int)o.charAt( 2 );
 
-		char1 = (int)o.charAt( o.length()-2 );
+		char1 = sumaAnt1;
 		char2 = (int)o.charAt( o.length()-1 );
 		char3 = (int)o.charAt( 0 );
 		char4 = (int)o.charAt( 1 );
-		char5 = (int)o.charAt( 2 );
-		sumaAnt2 = evaluaFuncBool( char1,char2,char3,char4,char5);
-		hash += sumaAnt2;
+		char5 = sumaAnt2;
+		sumaAnt2 = sumaAnt1;
+		sumaAnt1 = evaluaFuncBool( char1,char2,char3,char4,char5);
+		hash += sumaAnt1;
 
-		char1 = (int)o.charAt( o.length()-1 );
+		char1 = sumaAnt1;
 		char2 = (int)o.charAt( 0 );
 		char3 = (int)o.charAt( 1 );
 		char4 = (int)o.charAt( 2 );
 		char5 = sumaAnt2;
+		sumaAnt2 = sumaAnt1;
 		sumaAnt1 = evaluaFuncBool( char1,char2,char3,char4,char5);
 		hash += sumaAnt1;
 
