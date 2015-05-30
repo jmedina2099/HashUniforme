@@ -3,85 +3,107 @@ package org.hashuniforme.hash.funciones;
 
 public class HashIterativeBoolean implements FuncionHash {
 
+	private static final boolean DEBUG_PARTIAL_HASH = false;
+
 	public HashIterativeBoolean() {
 	}
 
 	@Override
-	public int getHash(String o) {
-		int hash = 0;
-		try {
-			hash = getHashEval( o);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		if( hash < 0 ) {
-			hash = Integer.MAX_VALUE + hash;
-		}
-		
-		return hash; // Return hash <int> without modulus size of table.
+	public long getHash(String o) {
+		return getHashEval( o); // Return hash <int> without modulus size of table.
 	}
 	
 
-	public int getHashEval( String o) {
+	public long getHashEval( String o) {
 
-		int hash = 0;
-		int char1,char2,char3,char4,char5;
-		int sumaAnt1 = (int)o.charAt( o.length()-2 );
-		int sumaAnt2 = (int)o.charAt( 2 );
+		long hash = 0;
+		long char1=0,char2=0,char3=0,char4=0,char5=0;
+		
+		long sumaAnt1 = (long)o.charAt( o.length()-2 );
+		long sumaAnt2 = (long)o.charAt( 2 );
+		long sumaAnt3 = 0;
+		long sumaAnt4 = 0;
+		long sumaAnt5 = 0;
 
-		char1 = sumaAnt1;
-		char2 = (int)o.charAt( o.length()-1 );
-		char3 = (int)o.charAt( 0 );
-		char4 = (int)o.charAt( 1 );
-		char5 = sumaAnt2;
-		sumaAnt2 = sumaAnt1;
-		sumaAnt1 = evaluaFuncBool( char1,char2,char3,char4,char5);
-		hash += sumaAnt1;
+		char1 += sumaAnt1;
+		char2 += (long)o.charAt( o.length()-1 );
+		char3 += (long)o.charAt( 0 );
+		char4 += (long)o.charAt( 1 );
+		char5 += sumaAnt2;
+		sumaAnt5 += sumaAnt4;
+		sumaAnt4 += sumaAnt3;
+		sumaAnt3 += sumaAnt2;
+		sumaAnt2 += sumaAnt1;
+		sumaAnt1 += evaluaFuncBool( char1,char2,char3,char4,char5);
 
-		char1 = sumaAnt1;
-		char2 = (int)o.charAt( 0 );
-		char3 = (int)o.charAt( 1 );
-		char4 = (int)o.charAt( 2 );
-		char5 = sumaAnt2;
-		sumaAnt2 = sumaAnt1;
-		sumaAnt1 = evaluaFuncBool( char1,char2,char3,char4,char5);
-		hash += sumaAnt1;
+		char1 += sumaAnt1;
+		char2 += char3;
+		char3 += char4;
+		char4 += (long)o.charAt( 2 );
+		char5 += sumaAnt2;
+		sumaAnt5 += sumaAnt4;
+		sumaAnt4 += sumaAnt3;
+		sumaAnt3 += sumaAnt2;
+		sumaAnt2 += sumaAnt1;
+		sumaAnt1 += evaluaFuncBool( char1,char2,char3,char4,char5);
 
 		// Main Loop.
 		for( int i=2; i<o.length()-2; i++ ) {
-			char1 = sumaAnt1;
-			char2 = (int)o.charAt( i-1 );
-			char3 = (int)o.charAt( i );
-			char4 = (int)o.charAt( i+1 );
-			char5 = sumaAnt2;
-			sumaAnt2 = sumaAnt1;			
-			sumaAnt1 = evaluaFuncBool( char1,char2,char3,char4,char5);
-			hash += sumaAnt1;
+			char1 += sumaAnt1;
+			char2 += char3;
+			char3 += char4;
+			char4 += (long)o.charAt( i+1 );
+			char5 += sumaAnt2;
+			sumaAnt5 += sumaAnt4;
+			sumaAnt4 += sumaAnt3;
+			sumaAnt3 += sumaAnt2;
+			sumaAnt2 += sumaAnt1;
+			sumaAnt1 += evaluaFuncBool( char1,char2,char3,char4,char5);
 		}
 
-		char1 = sumaAnt1;
-		char2 = (int)o.charAt( o.length()-3 );
-		char3 = (int)o.charAt( o.length()-2 );
-		char4 = (int)o.charAt( o.length()-1 );
-		char5 = sumaAnt2;
-		sumaAnt2 = sumaAnt1;
-		sumaAnt1 = evaluaFuncBool( char1,char2,char3,char4,char5);
-		hash += sumaAnt1;
+		char1 += sumaAnt1;
+		char2 += char3;
+		char3 += char4;
+		char4 += (long)o.charAt( o.length()-1 );
+		char5 += sumaAnt2;
+		sumaAnt5 += sumaAnt4;
+		sumaAnt4 += sumaAnt3;
+		sumaAnt3 += sumaAnt2;
+		sumaAnt2 += sumaAnt1;
+		sumaAnt1 += evaluaFuncBool( char1,char2,char3,char4,char5);
 
-		char1 = sumaAnt1;
-		char2 = (int)o.charAt( o.length()-2 );
-		char3 = (int)o.charAt( o.length()-1 );
-		char4 = (int)o.charAt( 0 );
-		char5 = sumaAnt2;
-		sumaAnt2 = sumaAnt1;
-		sumaAnt1 = evaluaFuncBool( char1,char2,char3,char4,char5);
-		hash += sumaAnt1;
+		char1 += sumaAnt1;
+		char2 += char3;
+		char3 += char4;
+		char4 += (long)o.charAt( 0 );
+		char5 += sumaAnt2;
+		sumaAnt5 += sumaAnt4;
+		sumaAnt4 += sumaAnt3;
+		sumaAnt3 += sumaAnt2;
+		sumaAnt2 += sumaAnt1;
+		sumaAnt1 += evaluaFuncBool( char1,char2,char3,char4,char5);
+		
+		hash = sumaAnt1 << 48 |
+			   sumaAnt1+sumaAnt2 << 32 |
+			   sumaAnt2+sumaAnt3+sumaAnt4 << 16 |
+			   sumaAnt1+sumaAnt2+sumaAnt3+sumaAnt4+sumaAnt5;
+				
+				
+		if( DEBUG_PARTIAL_HASH ) {
+			System.out.println( "**** sumAnt5 = "+sumaAnt5 );
+			System.out.println( "**** sumAnt4 = "+sumaAnt4 );
+			System.out.println( "**** sumAnt3 = "+sumaAnt3 );
+			System.out.println( "**** sumAnt2 = "+sumaAnt2 );
+			System.out.println( "**** sumAnt1 = "+sumaAnt1 );
+			
+			System.out.println( "**** hashFinal = "+hash );
+		}
 
 		return hash;	
 	}
 	
-	public int evaluaFuncBool(Integer char1, Integer char2, Integer char3, Integer char4, Integer char5) {
-		int hash = evaluaFuncBool1( char1,char2,char3,char4,char5 ) +
+	public long evaluaFuncBool(Long char1, Long char2, Long char3, Long char4, Long char5) {
+		long hash = evaluaFuncBool1( char1,char2,char3,char4,char5 ) +
 				   evaluaFuncBool2( char1,char2,char3,char4,char5 ) +
 				   evaluaFuncBool3( char1,char2,char3,char4,char5 ) +
 				   evaluaFuncBool4( char1,char2,char3,char4,char5 ) +
@@ -98,87 +120,95 @@ public class HashIterativeBoolean implements FuncionHash {
 				   evaluaFuncBool15( char1,char2,char3,char4,char5 ) +
 				   evaluaFuncBool16( char1,char2,char3,char4,char5 );
 		
+		if( DEBUG_PARTIAL_HASH ) {
+			System.out.println( "**** hashParcial = "+hash );
+		}
+		
 		return hash;	
 	}
 	
-	// (0,0,0,0)=(+,+,+,+)
-	public int evaluaFuncBool1(Integer char1, Integer char2, Integer char3, Integer char4, Integer char5) {
-		return ( char1 + char2 ) + ( char3 + char4 ) + char5;
-	}
+	//2996-(0,1,1,1),2996-(2,1,0,1),2997-(1,0,0,1),2997-(1,1,0,1),2997-(2,0,0,0),2997-(2,0,0,1),2997-(3,0,1,1),2997-(3,1,0,1),
 	
-	// (3,0,0,0)=(|,+,+,+)
-	public int evaluaFuncBool2(Integer char1, Integer char2, Integer char3, Integer char4, Integer char5) {
-		return ( char1 | char2 ) + ( char3 + char4 ) + char5;
+	// (0,1,1,1)=(+,^,^,^)
+	public long evaluaFuncBool1(Long char1, Long char2, Long char3, Long char4, Long char5) {
+		return ( char1 + char2 ) ^ ( char3 ^ char4 ) ^ char5;
+	}
+
+	// (2,1,0,1)=(&,^,+,^)
+	public long evaluaFuncBool2(Long char1, Long char2, Long char3, Long char4, Long char5) {
+		return ( char1 & char2 ) ^ ( char3 + char4 ) ^ char5;
 	}	
 	
-	// (3,3,0,0)=(|,|,+,+)
-	public int evaluaFuncBool3(Integer char1, Integer char2, Integer char3, Integer char4, Integer char5) {
-		return ( char1 | char2 ) | ( char3 + char4 ) + char5;
+	// (1,0,0,1)=(^,+,+,^)
+	public long evaluaFuncBool3(Long char1, Long char2, Long char3, Long char4, Long char5) {
+		return ( char1 ^ char2 ) + ( char3 + char4 ) ^ char5;
 	}	
 	
-	// (0,3,0,0)=(+,|,+,+)
-	public int evaluaFuncBool4(Integer char1, Integer char2, Integer char3, Integer char4, Integer char5) {
-		return ( char1 + char2 ) | ( char3 + char4 ) + char5;
+	// (1,1,0,1)=(^,^,+,^)
+	public long evaluaFuncBool4(Long char1, Long char2, Long char3, Long char4, Long char5) {
+		return ( char1 ^ char2 ) ^ ( char3 + char4 ) ^ char5;
 	}
-
-	// (3,0,1,0)=(|,+,^,+)
-	public int evaluaFuncBool5(Integer char1, Integer char2, Integer char3, Integer char4, Integer char5) {
-		return ( char1 | char2 ) + ( char3 ^ char4 ) + char5;
-	}
-
-	// (0,3,0,1)=(+,|,+,^)
-	public int evaluaFuncBool6(Integer char1, Integer char2, Integer char3, Integer char4, Integer char5) {
-		return ( char1 + char2 ) | ( char3 + char4 ) ^ char5;
-	}
-
-	// (1,3,0,0)=(^,|,+,+)
-	public int evaluaFuncBool7(Integer char1, Integer char2, Integer char3, Integer char4, Integer char5) {
-		return ( char1 ^ char2 ) | ( char3 + char4 ) + char5;
-	}
-
-	// (3,0,0,1)=(|,+,+,^)
-	public int evaluaFuncBool8(Integer char1, Integer char2, Integer char3, Integer char4, Integer char5) {
-		return ( char1 | char2 ) + ( char3 + char4 ) ^ char5;
-	}
-
+	
 	// (2,0,0,0)=(&,+,+,+)
-	public int evaluaFuncBool9(Integer char1, Integer char2, Integer char3, Integer char4, Integer char5) {
+	public long evaluaFuncBool5(Long char1, Long char2, Long char3, Long char4, Long char5) {
 		return ( char1 & char2 ) + ( char3 + char4 ) + char5;
 	}
 
-	// (1,3,1,0)=(^,|,^,+)
-	public int evaluaFuncBool10(Integer char1, Integer char2, Integer char3, Integer char4, Integer char5) {
-		return ( char1 ^ char2 ) | ( char3 ^ char4 ) + char5;
-	}
-	
-	// (3,3,1,0)=(|,|,^,+)
-	public int evaluaFuncBool11(Integer char1, Integer char2, Integer char3, Integer char4, Integer char5) {
-		return ( char1 | char2 ) | ( char3 ^ char4 ) + char5;
-	}
-	
-	// (3,1,1,0)=(|,^,^,+)
-	public int evaluaFuncBool12(Integer char1, Integer char2, Integer char3, Integer char4, Integer char5) {
-		return ( char1 | char2 ) ^ ( char3 ^ char4 ) + char5;
-	}
-	
-	// (3,1,0,0)=(|,^,+,+)
-	public int evaluaFuncBool13(Integer char1, Integer char2, Integer char3, Integer char4, Integer char5) {
-		return ( char1 | char2 ) ^ ( char3 + char4 ) + char5;
+	// (2,0,0,1)=(&,+,+,^)
+	public long evaluaFuncBool6(Long char1, Long char2, Long char3, Long char4, Long char5) {
+		return ( char1 & char2 ) + ( char3 + char4 ) ^ char5;
 	}
 
-	// (0,0,3,0)=(+,+,|,+)
-	public int evaluaFuncBool14(Integer char1, Integer char2, Integer char3, Integer char4, Integer char5) {
-		return ( char1 + char2 ) + ( char3 | char4 ) + char5;
+	// (3,0,1,1)=(^,^,+,^)
+	public long evaluaFuncBool7(Long char1, Long char2, Long char3, Long char4, Long char5) {
+		return ( char1 ^ char2 ) ^ ( char3 + char4 ) ^ char5;
 	}
 
 	// (3,1,0,1)=(|,^,+,^)
-	public int evaluaFuncBool15(Integer char1, Integer char2, Integer char3, Integer char4, Integer char5) {
+	public long evaluaFuncBool8(Long char1, Long char2, Long char3, Long char4, Long char5) {
 		return ( char1 | char2 ) ^ ( char3 + char4 ) ^ char5;
+	}
+
+	//2997-(3,3,0,1),2998-(0,0,0,1),2998-(0,2,0,1),2998-(1,0,1,1),2998-(3,1,1,1),2999-(0,0,1,1),2999-(0,1,0,1),2999-(0,2,0,0),
+
+	// (3,3,0,1)=(|,|,+,^)
+	public long evaluaFuncBool9(Long char1, Long char2, Long char3, Long char4, Long char5) {
+		return ( char1 | char2 ) | ( char3 + char4 ) ^ char5;
+	}
+
+	// (0,0,0,1)=(+,+,+,^)
+	public long evaluaFuncBool10(Long char1, Long char2, Long char3, Long char4, Long char5) {
+		return ( char1 + char2 ) + ( char3 + char4 ) ^ char5;
+	}
+	
+	// (0,2,0,1)=(+,&,+,^)
+	public long evaluaFuncBool11(Long char1, Long char2, Long char3, Long char4, Long char5) {
+		return ( char1 + char2 ) & ( char3 + char4 ) ^ char5;
+	}
+	
+	// (1,0,1,1)=(^,+,^,^)
+	public long evaluaFuncBool12(Long char1, Long char2, Long char3, Long char4, Long char5) {
+		return ( char1 ^ char2 ) + ( char3 ^ char4 ) ^ char5;
+	}
+	
+	// (3,1,1,1)=(|,^,^,^)
+	public long evaluaFuncBool13(Long char1, Long char2, Long char3, Long char4, Long char5) {
+		return ( char1 | char2 ) ^ ( char3 ^ char4 ) ^ char5;
+	}
+
+	// (0,0,1,1)=(+,+,^,^)
+	public long evaluaFuncBool14(Long char1, Long char2, Long char3, Long char4, Long char5) {
+		return ( char1 + char2 ) + ( char3 ^ char4 ) ^ char5;
+	}
+
+	// (0,1,0,1)=(+,^,+,^)
+	public long evaluaFuncBool15(Long char1, Long char2, Long char3, Long char4, Long char5) {
+		return ( char1 + char2 ) ^ ( char3 + char4 ) ^ char5;
 	}	
 	
-	// (0,1,0,1)=(+,^,+,^)
-	public int evaluaFuncBool16(Integer char1, Integer char2, Integer char3, Integer char4, Integer char5) {
-		return ( char1 + char2 ) ^ ( char3 + char4 ) ^ char5;
+	// (0,2,0,0)=(+,&,+,+)
+	public long evaluaFuncBool16(Long char1, Long char2, Long char3, Long char4, Long char5) {
+		return ( char1 + char2 ) & ( char3 + char4 ) + char5;
 	}
 
 }

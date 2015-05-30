@@ -3,6 +3,7 @@
  */
 package org.hashuniforme.testing.hash.tabla;
 
+import java.util.Arrays;
 import java.util.Hashtable;
 
 import org.hashuniforme.testing.hash.funciones.HashIterativeBooleanTesting;
@@ -18,7 +19,7 @@ public class TablaHashTesting {
 
 	private HashIterativeBooleanTesting funcionHash;
 	
-	private Hashtable<Integer,Object>[] tablaHash;
+	private Hashtable<Long,Object>[] tablaHash;
 	private Integer[] sizesColisiones;
 	private Integer[] sizesCasillas;
 
@@ -33,7 +34,7 @@ public class TablaHashTesting {
 		this.sizesCasillas = new Integer[capacity];
 		this.tablaHash = new Hashtable[capacity];
 		for( int i=0; i<capacity; i++ ) {
-			this.tablaHash[i] = new Hashtable<Integer,Object>();
+			this.tablaHash[i] = new Hashtable<Long,Object>();
 			this.sizesColisiones[i] = 0;
 			this.sizesCasillas[i] = 0;
 		}
@@ -41,17 +42,23 @@ public class TablaHashTesting {
 	
 	public void add( Object o, int oper1, int oper2, int oper3, int oper4) {
 		String objeto = o.toString();
-		int hash = this.funcionHash.getHash(objeto,oper1,oper2,oper3,oper4);
-		int hashMod = hash % capacity;
+		long hashOld = this.funcionHash.getHash(objeto,oper1,oper2,oper3,oper4);
+		long hash = hashOld;
+		if( hash < 0 ) {
+			hash = Long.MAX_VALUE + hash;
+		}
+
+		int hashMod =(int)(hash % capacity); // Index of the array for insertion.
 		
-		//System.out.println( "HASH="+hash );
+		//System.out.println( "HASH="+hashOld );
 		
 		Object obj;
 		if( hashMod < tablaHash.length ) {
-			if( (obj=this.tablaHash[hashMod].get(hash))!=null ) { // Collision, dude!.
+			if( (obj=this.tablaHash[hashMod].get(hashOld))!=null ) { // Collision, dude!.
 				this.sizesColisiones[hashMod]++;
 				if( DEBUG_COLISSIONS ) {
-					System.out.println( "Colision-HASH="+ hash +"/ OBJECT="+objeto+" / OBJ="+obj );
+					System.out.println( "ColisionTHIS-HASH= **START**\n\n"+ hashOld +"\n\n **END** OBJECT=\n\n"+Arrays.toString(objeto.getBytes())+"\n\n"+new String(objeto.getBytes()) );
+					System.out.println( "ColisionWITH/THIS-HASH= **START**\n\n"+ hashOld +"\n\n **END** OBJECT=\n\n"+Arrays.toString(obj.toString().getBytes())+"\n\n"+obj.toString() );
 				}
 			} else {
 				if( SAVE_OBJECT_IN_TABLE ) {

@@ -3,6 +3,7 @@
  */
 package org.hashuniforme.hash.tabla;
 
+import java.util.Arrays;
 import java.util.Hashtable;
 
 import org.hashuniforme.hash.funciones.FuncionHash;
@@ -13,12 +14,13 @@ import org.hashuniforme.hash.funciones.FuncionHash;
  */
 public class TablaHash {
 	
+	
 	private static final boolean SAVE_OBJECT_IN_TABLE = false; // Generally true, false for saving memory.
 	private static final boolean DEBUG_COLISSIONS = false;
 
 	private FuncionHash funcionHash;
 	
-	private Hashtable<Integer,Object>[] tablaHash;
+	private Hashtable<Long,Object>[] tablaHash;
 	private Integer[] sizesColisiones;
 	private Integer[] sizesCasillas;
 
@@ -33,37 +35,48 @@ public class TablaHash {
 		this.sizesCasillas = new Integer[capacity];
 		this.tablaHash = new Hashtable[capacity];
 		for( int i=0; i<capacity; i++ ) {
-			this.tablaHash[i] = new Hashtable<Integer,Object>();
+			this.tablaHash[i] = new Hashtable<Long,Object>();
 			this.sizesColisiones[i] = 0;
 			this.sizesCasillas[i] = 0;
 		}
 	}
 	
-	public void add( Object o) {
+	public boolean add( Object o) {
 		String objeto = o.toString();
-		int hash = this.funcionHash.getHash(objeto);
-		int hashMod = hash % capacity; // Index of the array for insertion.
+		long hashOld = this.funcionHash.getHash(objeto);
+		long hash = hashOld;
+		if( hash < 0 ) {
+			hash = Long.MAX_VALUE + hash;
+		}
+
+		int hashMod = (int)(hash % capacity); // Index of the array for insertion.
 		
-		//System.out.println( "HASH="+hash );
+		//System.out.println( "HASH="+hashOld );
 		
-		Object obj;
 		if( hashMod < tablaHash.length ) {
-			if( (obj=this.tablaHash[hashMod].get(hash))!=null ) { // Collision, dude!.
-				this.sizesColisiones[hashMod]++;
-				if( DEBUG_COLISSIONS ) {
-					System.out.println( "Colision-HASH="+ hash +"/ OBJECT="+objeto+" / OBJ="+obj );
+			Object obj;
+			if( (obj=this.tablaHash[hashMod].get(hashOld))!=null ) { // Collision, dude!.
+				if( !new String(objeto.getBytes()).equals(obj.toString()) ) {				
+					this.sizesColisiones[hashMod]++;
+					if( DEBUG_COLISSIONS ) {
+						System.out.println( "ColisionTHIS-HASH= **START**\n\n"+ hashOld +"\n\n **END** OBJECT=\n\n"+Arrays.toString(objeto.getBytes())+"\n\n"+new String(objeto.getBytes()) );
+						System.out.println( "ColisionWITH/THIS-HASH= **START**\n\n"+ hashOld +"\n\n **END** OBJECT=\n\n"+Arrays.toString(obj.toString().getBytes())+"\n\n"+obj.toString() );
+						return false;
+					}
 				}
 			} else {
 				if( SAVE_OBJECT_IN_TABLE ) {
-					this.tablaHash[hashMod].put( hash, objeto );
+					this.tablaHash[hashMod].put( hashOld, objeto );
 				} else {
-					this.tablaHash[hashMod].put( hash, hash );
+					this.tablaHash[hashMod].put( hashOld, hashOld );
 				}
 			}
 			this.sizesCasillas[hashMod]++;			
 		} else {
 			System.out.println( "indice hash, fuera de rango!" );
 		}
+		
+		return true;
 	}
 
 	public int getColisiones() {

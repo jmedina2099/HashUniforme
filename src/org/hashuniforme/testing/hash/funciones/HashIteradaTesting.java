@@ -17,83 +17,92 @@ public class HashIteradaTesting implements HashIterativeBooleanTesting {
 	}
 	
 	@Override
-	public int getHash(String o, int oper1, int oper2, int oper3, int oper4) {
-		int hash = 0;
-		try {
-			hash = getHashEval( o,oper1,oper2,oper3,oper4 );
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		if( hash < 0 ) {
-			hash = Integer.MAX_VALUE + hash;
-		}
-		
-		return hash;
+	public long getHash(String o, int oper1, int oper2, int oper3, int oper4) {
+		return getHashEval( o,oper1,oper2,oper3,oper4 );
 	}
 	
 
-	public int getHashEval( String o,int oper1, int oper2, int oper3, int oper4 ) {
+	public long getHashEval( String o,int oper1, int oper2, int oper3, int oper4 ) {
 
-		int hash = 0;
-		int char1,char2,char3,char4,char5;
-		int sumaAnt1 = (int)o.charAt( o.length()-2 );
-		int sumaAnt2 = (int)o.charAt( 2 );
+		long hash = 0;
+		long char1=0,char2=0,char3=0,char4=0,char5=0;
 
-		char1 = sumaAnt1;
-		char2 = (int)o.charAt( o.length()-1 );
-		char3 = (int)o.charAt( 0 );
-		char4 = (int)o.charAt( 1 );
-		char5 = sumaAnt2;
-		sumaAnt2 = sumaAnt1;
-		sumaAnt1 = evaluaFuncBool1( char1,char2,char3,char4,char5,oper1,oper2,oper3,oper4 );
-		hash += sumaAnt1;
+		long sumaAnt1 = (long)o.charAt( o.length()-2 );
+		long sumaAnt2 = (long)o.charAt( 2 );
+		long sumaAnt3 = 0;
+		long sumaAnt4 = 0;
+		long sumaAnt5 = 0;
 
-		char1 = sumaAnt1;
-		char2 = (int)o.charAt( 0 );
-		char3 = (int)o.charAt( 1 );
-		char4 = (int)o.charAt( 2 );
-		char5 = sumaAnt2;
-		sumaAnt2 = sumaAnt1;
-		sumaAnt1 = evaluaFuncBool1( char1,char2,char3,char4,char5,oper1,oper2,oper3,oper4 );
-		hash += sumaAnt1;
+		char1 += sumaAnt1;
+		char2 += (long)o.charAt( o.length()-1 );
+		char3 += (long)o.charAt( 0 );
+		char4 += (long)o.charAt( 1 );
+		char5 += sumaAnt2;
+		sumaAnt5 += sumaAnt4;
+		sumaAnt4 += sumaAnt3;
+		sumaAnt3 += sumaAnt2;
+		sumaAnt2 += sumaAnt1;
+		sumaAnt1 += evaluaFuncBool1( char1,char2,char3,char4,char5,oper1,oper2,oper3,oper4 );
+
+		char1 += sumaAnt1;
+		char2 += char3;
+		char3 += char4;
+		char4 += (long)o.charAt( 2 );
+		char5 += sumaAnt2;
+		sumaAnt5 += sumaAnt4;
+		sumaAnt4 += sumaAnt3;
+		sumaAnt3 += sumaAnt2;
+		sumaAnt2 += sumaAnt1;
+		sumaAnt1 += evaluaFuncBool1( char1,char2,char3,char4,char5,oper1,oper2,oper3,oper4 );
 
 		// Main Loop.
 		for( int i=2; i<o.length()-2; i++ ) {
-			char1 = sumaAnt1;
-			char2 = (int)o.charAt( i-1 );
-			char3 = (int)o.charAt( i );
-			char4 = (int)o.charAt( i+1 );
-			char5 = sumaAnt2;
-			sumaAnt2 = sumaAnt1;
-			sumaAnt1 = evaluaFuncBool1( char1,char2,char3,char4,char5,oper1,oper2,oper3,oper4 );
-			hash += sumaAnt1;
+			char1 += sumaAnt1;
+			char2 += char3;
+			char3 += char4;
+			char4 += (long)o.charAt( i+1 );
+			char5 += sumaAnt2;
+			sumaAnt5 += sumaAnt4;
+			sumaAnt4 += sumaAnt3;
+			sumaAnt3 += sumaAnt2;
+			sumaAnt2 += sumaAnt1;
+			sumaAnt1 += evaluaFuncBool1( char1,char2,char3,char4,char5,oper1,oper2,oper3,oper4 );
 		}
 
-		char1 = sumaAnt1;
-		char2 = (int)o.charAt( o.length()-3 );
-		char3 = (int)o.charAt( o.length()-2 );
-		char4 = (int)o.charAt( o.length()-1 );
-		char5 = sumaAnt2;
-		sumaAnt2 = sumaAnt1;
-		sumaAnt1 = evaluaFuncBool1( char1,char2,char3,char4,char5,oper1,oper2,oper3,oper4 );
-		hash += sumaAnt1;
+		char1 += sumaAnt1;
+		char2 += char3;
+		char3 += char4;
+		char4 += (long)o.charAt( o.length()-1 );
+		char5 += sumaAnt2;
+		sumaAnt5 += sumaAnt4;
+		sumaAnt4 += sumaAnt3;
+		sumaAnt3 += sumaAnt2;
+		sumaAnt2 += sumaAnt1;
+		sumaAnt1 += evaluaFuncBool1( char1,char2,char3,char4,char5,oper1,oper2,oper3,oper4 );
 
-		char1 = sumaAnt1;
-		char2 = (int)o.charAt( o.length()-2 );
-		char3 = (int)o.charAt( o.length()-1 );
-		char4 = (int)o.charAt( 0 );
-		char5 = sumaAnt2;
-		sumaAnt2 = sumaAnt1;
-		sumaAnt1 = evaluaFuncBool1( char1,char2,char3,char4,char5,oper1,oper2,oper3,oper4);
-		hash += sumaAnt1;
-		
+		char1 += sumaAnt1;
+		char2 += char3;
+		char3 += char4;
+		char4 += (long)o.charAt( 0 );
+		char5 += sumaAnt2;
+		sumaAnt5 += sumaAnt4;
+		sumaAnt4 += sumaAnt3;
+		sumaAnt3 += sumaAnt2;
+		sumaAnt2 += sumaAnt1;
+		sumaAnt1 += evaluaFuncBool1( char1,char2,char3,char4,char5,oper1,oper2,oper3,oper4 );
+
+		hash = sumaAnt1 << 48 |
+			   sumaAnt1+sumaAnt2 << 32 |
+			   sumaAnt2+sumaAnt3+sumaAnt4 << 16 |
+			   sumaAnt1+sumaAnt2+sumaAnt3+sumaAnt4+sumaAnt5;
+
 		return hash;	
 	}
 
-	public int evaluaFuncBool1(Integer char1, Integer char2, Integer char3, Integer char4, Integer char5,
+	public long evaluaFuncBool1(Long char1, Long char2, Long char3, Long char4, Long char5,
 			int oper1, int oper2, int oper3, int oper4) {
 		
-		int sumParcial = 0;
+		long sumParcial = 0;
 		if( oper1== 0 ) {
 			sumParcial = char1 + char2;
 		} else if( oper1== 1 ) {
@@ -112,7 +121,7 @@ public class HashIteradaTesting implements HashIterativeBooleanTesting {
 			sumParcial &= char3;
 		} else if( oper2== 3 ) {
 			sumParcial |= char3;
-		}
+		} 
 
 		if( oper3== 0 ) {
 			sumParcial += char4;
@@ -122,7 +131,7 @@ public class HashIteradaTesting implements HashIterativeBooleanTesting {
 			sumParcial &= char4;
 		} else if( oper3== 3 ) {
 			sumParcial |= char4;
-		}
+		} 
 
 		if( oper4== 0 ) {
 			sumParcial += char5;
@@ -132,7 +141,7 @@ public class HashIteradaTesting implements HashIterativeBooleanTesting {
 			sumParcial &= char5;
 		} else if( oper4== 3 ) {
 			sumParcial |= char5;
-		}
+		} 
 
 		return sumParcial;
 	}

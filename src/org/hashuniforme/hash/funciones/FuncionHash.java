@@ -14,5 +14,5 @@ public interface FuncionHash {
 	 * @param o
 	 * @return
 	 */
-	public int getHash( String o);
+	public long getHash( String o);
 }

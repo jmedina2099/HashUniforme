@@ -14,5 +14,5 @@ public interface HashIterativeBooleanTesting {
 	 * @param o
 	 * @return
 	 */
-	public int getHash( String o, int oper1, int oper2, int oper3, int oper4);
+	public long getHash( String o, int oper1, int oper2, int oper3, int oper4);
 }

@@ -19,7 +19,7 @@ public class HashSumaChars implements FuncionHash {
 	 * @see org.hashuniforme.hash.funciones.FuncionHash#getHash(java.lang.String)
 	 */
 	@Override
-	public int getHash(String o) {
+	public long getHash(String o) {
 		
 		int hash = 0;
 		for( int i=0; i<o.length(); i++ ) {
