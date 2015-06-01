@@ -83,12 +83,11 @@ public class HashIterativeBoolean implements FuncionHash {
 		sumaAnt2 += sumaAnt1;
 		sumaAnt1 += evaluaFuncBool( char1,char2,char3,char4,char5);
 		
-		hash = sumaAnt1 << 48 |
-			   sumaAnt1+sumaAnt2 << 32 |
-			   sumaAnt2+sumaAnt3+sumaAnt4 << 16 |
-			   sumaAnt1+sumaAnt2+sumaAnt3+sumaAnt4+sumaAnt5;
-				
-				
+		hash = (sumaAnt1 << 48) |
+	               ((sumaAnt1+sumaAnt2 << 32) & 0xffffffffL) |
+	               ((sumaAnt1+sumaAnt2+sumaAnt3 << 16) & 0xffffffffL) |
+	               ((sumaAnt1+sumaAnt4+sumaAnt5) & 0xffffffffL);
+					
 		if( DEBUG_PARTIAL_HASH ) {
 			System.out.println( "**** sumAnt5 = "+sumaAnt5 );
 			System.out.println( "**** sumAnt4 = "+sumaAnt4 );

@@ -91,10 +91,11 @@ public class HashIteradaTesting implements HashIterativeBooleanTesting {
 		sumaAnt2 += sumaAnt1;
 		sumaAnt1 += evaluaFuncBool1( char1,char2,char3,char4,char5,oper1,oper2,oper3,oper4 );
 
-		hash = sumaAnt1 << 48 |
-			   sumaAnt1+sumaAnt2 << 32 |
-			   sumaAnt2+sumaAnt3+sumaAnt4 << 16 |
-			   sumaAnt1+sumaAnt2+sumaAnt3+sumaAnt4+sumaAnt5;
+		hash = (sumaAnt1 << 48) |
+	               ((sumaAnt1+sumaAnt2 << 32) & 0xffffffffL) |
+	               ((sumaAnt1+sumaAnt2+sumaAnt3 << 16) & 0xffffffffL) |
+	               ((sumaAnt1+sumaAnt4+sumaAnt5) & 0xffffffffL);
+					
 
 		return hash;	
 	}

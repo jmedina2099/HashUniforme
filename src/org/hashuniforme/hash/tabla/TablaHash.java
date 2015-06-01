@@ -15,7 +15,7 @@ import org.hashuniforme.hash.funciones.FuncionHash;
 public class TablaHash {
 	
 	
-	private static final boolean SAVE_OBJECT_IN_TABLE = false; // Generally true, false for saving memory.
+	private static boolean SAVE_OBJECT_IN_TABLE = false; // Generally true, false for saving memory.
 	private static final boolean DEBUG_COLISSIONS = false;
 
 	private FuncionHash funcionHash;

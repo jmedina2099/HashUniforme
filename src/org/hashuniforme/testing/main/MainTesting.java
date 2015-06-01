@@ -13,9 +13,6 @@ import java.util.Random;
 import java.util.Set;
 import java.util.TreeMap;
 
-import org.hashuniforme.hash.funciones.FuncionHash;
-import org.hashuniforme.hash.funciones.HashIterativeBoolean;
-import org.hashuniforme.hash.tabla.TablaHash;
 import org.hashuniforme.main.Main;
 import org.hashuniforme.testing.hash.funciones.HashIteradaTesting;
 import org.hashuniforme.testing.hash.funciones.HashIterativeBooleanTesting;
@@ -76,8 +73,8 @@ public final class MainTesting {
 				for( oper2=0; oper2<totalOper; oper2++) {
 					for( oper3=0; oper3<totalOper; oper3++) {
 						for( oper4=0; oper4<totalOper; oper4++) {
-							colisiones = executeTest( oper1,oper2,oper3,oper4 );
-							//colisiones = executeTestDictionary( oper1,oper2,oper3,oper4 );
+							//colisiones = executeTest( oper1,oper2,oper3,oper4 );
+							colisiones = executeTestDictionary( oper1,oper2,oper3,oper4 );
 							cadena = "("+oper1+","+oper2+","+oper3+","+oper4+")";
 							funciones.put( new Object[]{colisiones,cadena},cadena );
 							System.out.println( "COLISIONES="+colisiones+"-"+cadena );
@@ -136,7 +133,7 @@ public final class MainTesting {
 		HashIterativeBooleanTesting funcionHash = new HashIteradaTesting();
 		TablaHashTesting tablaHash = new TablaHashTesting( funcionHash, prime );
 
-		InputStream istream = Main.class.getResourceAsStream( "/esp.txt" );
+		InputStream istream = Main.class.getResourceAsStream( "/ES.txt" ); //( "/esp.txt" ); 
 		BufferedInputStream bis = new BufferedInputStream(istream);
 		BufferedReader reader = new BufferedReader(new InputStreamReader(bis) );
 		

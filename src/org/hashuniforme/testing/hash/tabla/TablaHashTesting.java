@@ -14,7 +14,7 @@ import org.hashuniforme.testing.hash.funciones.HashIterativeBooleanTesting;
  */
 public class TablaHashTesting {
 	
-	private static final boolean SAVE_OBJECT_IN_TABLE = false; // Generally true, false for saving memory.
+	private static final boolean SAVE_OBJECT_IN_TABLE = true; // Generally true, false for saving memory.
 	private static final boolean DEBUG_COLISSIONS = false;
 
 	private HashIterativeBooleanTesting funcionHash;
