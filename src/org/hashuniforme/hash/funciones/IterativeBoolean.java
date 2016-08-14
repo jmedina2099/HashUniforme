@@ -8,9 +8,7 @@ import gnu.crypto.util.Util;
 /**
  * <p>The iterative algorithm takes as input a message of arbitrary
  * length and produces as output a 160-bit "fingerprint" or "message digest" of
- * the input. It is conjectured that it is computationally infeasible to
- * produce two messages having the same message digest, or to produce any
- * message having a given prespecified target message digest.</p>
+ * the input.</p>
  *
  * <p>References:</p>
  *
