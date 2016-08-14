@@ -1,57 +1,13 @@
 package org.hashuniforme.hash.funciones;
 
-// ----------------------------------------------------------------------------
-// $Id: MD5.java,v 1.7 2005/10/06 04:24:14 rsdio Exp $
-//
-// Copyright (C) 2001, 2002, Free Software Foundation, Inc.
-//
-// This file is part of GNU Crypto.
-//
-// GNU Crypto is free software; you can redistribute it and/or modify
-// it under the terms of the GNU General Public License as published by
-// the Free Software Foundation; either version 2, or (at your option)
-// any later version.
-//
-// GNU Crypto is distributed in the hope that it will be useful, but
-// WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-// General Public License for more details.
-//
-// You should have received a copy of the GNU General Public License
-// aint with this program; see the file COPYING.  If not, write to the
-//
-//    Free Software Foundation Inc.,
-//    51 Franklin Street, Fifth Floor,
-//    Boston, MA 02110-1301
-//    USA
-//
-// Linking this library statically or dynamically with other modules is
-// making a combined work based on this library.  Thus, the terms and
-// conditions of the GNU General Public License cover the whole
-// combination.
-//
-// As a special exception, the copyright holders of this library give
-// you permission to link this library with independent modules to
-// produce an executable, regardless of the license terms of these
-// independent modules, and to copy and distribute the resulting
-// executable under terms of your choice, provided that you also meet,
-// for each linked independent module, the terms and conditions of the
-// license of that module.  An independent module is a module which is
-// not derived from or based on this library.  If you modify this
-// library, you may extend this exception to your version of the
-// library, but you are not obligated to do so.  If you do not wish to
-// do so, delete this exception statement from your version.
-// ----------------------------------------------------------------------------
-
-//import gnu.crypto.Registry;
 import gnu.crypto.hash.BaseHash;
 import gnu.crypto.hash.IMessageDigest;
 import gnu.crypto.hash.MD5;
 import gnu.crypto.util.Util;
 
 /**
- * <p>The MD5 message-digest algorithm takes as input a message of arbitrary
- * length and produces as output a 128-bit "fingerprint" or "message digest" of
+ * <p>The iterative algorithm takes as input a message of arbitrary
+ * length and produces as output a 160-bit "fingerprint" or "message digest" of
  * the input. It is conjectured that it is computationally infeasible to
  * produce two messages having the same message digest, or to produce any
  * message having a given prespecified target message digest.</p>
@@ -59,22 +15,23 @@ import gnu.crypto.util.Util;
  * <p>References:</p>
  *
  * <ol>
- *    <li>The <a href="http://www.ietf.org/rfc/rfc1321.txt">MD5</a> Message-
- *    Digest Algorithm.<br>
- *    R. Rivest.</li>
+ *    <li><a href="http://132.248.9.195/ptd2009/abril/0642039/Index.html">Funciones Hash Criptográficas</a>.<br>
+ *    Jorge Alberto Medina Rosas.</li>
  * </ol>
  *
- * @version $Revision: 1.7 $
+ * @author Jorge Alberto Medina Rosas
+ * @version $Revision: 1.7.2 $
  */
 public class IterativeBoolean extends BaseHash {
 
    // Constants and variables
    // -------------------------------------------------------------------------
 
-	private static final int DIGEST_LENGTH = 20;
+   /** 160-bit output length. */
+   private static final int DIGEST_LENGTH = 20;
 	
-	/** The MD4 algorithm operates on 640-bit blocks, or 80 bytes. */
-	private static final int BLOCK_SIZE = 80; // inner block size in bytes
+   /** The iterative algorithm operates on 640-bit blocks, or 80 bytes. */
+   private static final int BLOCK_SIZE = 80; // inner block size in bytes
 
    private static final String DIGEST0 = "80E7C74500D72AF7000109ED00FEEC2A004DA32E";
 
@@ -127,8 +84,15 @@ public class IterativeBoolean extends BaseHash {
 
    // Implementation of concrete methods in BaseHash --------------------------
 
+   
+   /**
+    * <p>Implementation of the iterative algorithm.</p>
+    *
+    * @param in 640-bit block.
+    * @param i the offset index.
+    */
    protected synchronized void transform(byte[] in, int i) {
-	  int[] X = new int[20];
+      int[] X = new int[20];
       X[0] =  (in[i++] & 0xFF) | (in[i++] & 0xFF) << 8 | (in[i++] & 0xFF) << 16 | in[i++] << 24;
       X[1] =  (in[i++] & 0xFF) | (in[i++] & 0xFF) << 8 | (in[i++] & 0xFF) << 16 | in[i++] << 24;
       X[2] =  (in[i++] & 0xFF) | (in[i++] & 0xFF) << 8 | (in[i++] & 0xFF) << 16 | in[i++] << 24;
@@ -214,13 +178,13 @@ public class IterativeBoolean extends BaseHash {
       B += A;
       A += evaluaFuncBool(char1,char2,char3,char4,char5);
 
-		if( DEBUG_PARTIAL_HASH ) {
-			System.out.println( "**** E = "+E );
-			System.out.println( "**** D = "+D );
-			System.out.println( "**** C = "+C );
-			System.out.println( "**** B = "+B );
-			System.out.println( "**** A = "+A );
-		}
+      if( DEBUG_PARTIAL_HASH ) {
+          System.out.println( "**** E = "+E );
+          System.out.println( "**** D = "+D );
+          System.out.println( "**** C = "+C );
+          System.out.println( "**** B = "+B );
+          System.out.println( "**** A = "+A );
+      }
 
       h0 += A;
       h1 += B;
@@ -230,112 +194,109 @@ public class IterativeBoolean extends BaseHash {
    }
    
    private int evaluaFuncBool(int char1, int char2, int char3, int char4, int char5) {
-		int hash = evaluaFuncBool1( char1,char2,char3,char4,char5 ) +
-				   evaluaFuncBool2( char1,char2,char3,char4,char5 ) +
-				   evaluaFuncBool3( char1,char2,char3,char4,char5 ) +
-				   evaluaFuncBool4( char1,char2,char3,char4,char5 ) +
-				   evaluaFuncBool5( char1,char2,char3,char4,char5 ) +
-				   evaluaFuncBool6( char1,char2,char3,char4,char5 ) +
-				   evaluaFuncBool7( char1,char2,char3,char4,char5 ) +
-				   evaluaFuncBool8( char1,char2,char3,char4,char5 ) +
-				   evaluaFuncBool9( char1,char2,char3,char4,char5 ) +
-				   evaluaFuncBool10( char1,char2,char3,char4,char5 ) +
-				   evaluaFuncBool11( char1,char2,char3,char4,char5 ) +
-				   evaluaFuncBool12( char1,char2,char3,char4,char5 ) +
-				   evaluaFuncBool13( char1,char2,char3,char4,char5 ) +
-				   evaluaFuncBool14( char1,char2,char3,char4,char5 ) +
-				   evaluaFuncBool15( char1,char2,char3,char4,char5 ) +
-				   evaluaFuncBool16( char1,char2,char3,char4,char5 );
-		
-		if( DEBUG_PARTIAL_HASH ) {
-			System.out.println( "**** hashParcial = "+hash );
-		}
-		
-		
-		return hash;	
-	}
+      int hash = evaluaFuncBool1( char1,char2,char3,char4,char5 ) +
+                 evaluaFuncBool2( char1,char2,char3,char4,char5 ) +
+                 evaluaFuncBool3( char1,char2,char3,char4,char5 ) +
+                 evaluaFuncBool4( char1,char2,char3,char4,char5 ) +
+                 evaluaFuncBool5( char1,char2,char3,char4,char5 ) +
+                 evaluaFuncBool6( char1,char2,char3,char4,char5 ) +
+                 evaluaFuncBool7( char1,char2,char3,char4,char5 ) +
+                 evaluaFuncBool8( char1,char2,char3,char4,char5 ) +
+                 evaluaFuncBool9( char1,char2,char3,char4,char5 ) +
+                 evaluaFuncBool10( char1,char2,char3,char4,char5 ) +
+                 evaluaFuncBool11( char1,char2,char3,char4,char5 ) +
+                 evaluaFuncBool12( char1,char2,char3,char4,char5 ) +
+                 evaluaFuncBool13( char1,char2,char3,char4,char5 ) +
+                 evaluaFuncBool14( char1,char2,char3,char4,char5 ) +
+                 evaluaFuncBool15( char1,char2,char3,char4,char5 ) +
+                 evaluaFuncBool16( char1,char2,char3,char4,char5 );
 
-	// (0,1,1,1)=(+,^,^,^)
-	private int evaluaFuncBool1(int char1, int char2, int char3, int char4, int char5) {
-		return ( char1 + char2 ) ^ ( char3 ^ char4 ) ^ char5;
-	}
+      if( DEBUG_PARTIAL_HASH ) {
+          System.out.println( "**** hashParcial = "+hash );
+      }
 
-	// (2,1,0,1)=(&,^,+,^)	
-	private int evaluaFuncBool2(int char1, int char2, int char3, int char4, int char5) {
-		return ( char1 & char2 ) ^ ( char3 + char4 ) ^ char5;
-	}	
+      return hash;	
+   }
+
+   // (0,1,1,1)=(+,^,^,^)
+   private int evaluaFuncBool1(int char1, int char2, int char3, int char4, int char5) {
+      return ( char1 + char2 ) ^ ( char3 ^ char4 ) ^ char5;
+   }
+
+   // (2,1,0,1)=(&,^,+,^)	
+   private int evaluaFuncBool2(int char1, int char2, int char3, int char4, int char5) {
+      return ( char1 & char2 ) ^ ( char3 + char4 ) ^ char5;
+   }	
 	
-	// (1,0,0,1)=(^,+,+,^)
-	private int evaluaFuncBool3(int char1, int char2, int char3, int char4, int char5) {
-		return ( char1 ^ char2 ) + ( char3 + char4 ) ^ char5;
-	}	
+   // (1,0,0,1)=(^,+,+,^)
+   private int evaluaFuncBool3(int char1, int char2, int char3, int char4, int char5) {
+      return ( char1 ^ char2 ) + ( char3 + char4 ) ^ char5;
+   }	
 	
-	// (1,1,0,1)=(^,^,+,^)
-	private int evaluaFuncBool4(int char1, int char2, int char3, int char4, int char5) {
-		return ( char1 ^ char2 ) ^ ( char3 + char4 ) ^ char5;
-	}
+   // (1,1,0,1)=(^,^,+,^)
+   private int evaluaFuncBool4(int char1, int char2, int char3, int char4, int char5) {
+      return ( char1 ^ char2 ) ^ ( char3 + char4 ) ^ char5;
+   }
 	
-	// (2,0,0,0)=(&,+,+,+)
-	private int evaluaFuncBool5(int char1, int char2, int char3, int char4, int char5) {
-		return ( char1 & char2 ) + ( char3 + char4 ) + char5;
-	}
+   // (2,0,0,0)=(&,+,+,+)
+   private int evaluaFuncBool5(int char1, int char2, int char3, int char4, int char5) {
+      return ( char1 & char2 ) + ( char3 + char4 ) + char5;
+   }
 
-	// (2,0,0,1)=(&,+,+,^)
-	private int evaluaFuncBool6(int char1, int char2, int char3, int char4, int char5) {
-		return ( char1 & char2 ) + ( char3 + char4 ) ^ char5;
-	}
+   // (2,0,0,1)=(&,+,+,^)
+   private int evaluaFuncBool6(int char1, int char2, int char3, int char4, int char5) {
+      return ( char1 & char2 ) + ( char3 + char4 ) ^ char5;
+   }
 
-	// (3,0,1,1)=(^,^,+,^)
-	private int evaluaFuncBool7(int char1, int char2, int char3, int char4, int char5) {
-		return ( char1 ^ char2 ) ^ ( char3 + char4 ) ^ char5;
-	}
+   // (3,0,1,1)=(^,^,+,^)
+   private int evaluaFuncBool7(int char1, int char2, int char3, int char4, int char5) {
+      return ( char1 ^ char2 ) ^ ( char3 + char4 ) ^ char5;
+   }
 
-	// (3,1,0,1)=(|,^,+,^)
-	private int evaluaFuncBool8(int char1, int char2, int char3, int char4, int char5) {
-		return ( char1 | char2 ) ^ ( char3 + char4 ) ^ char5;
-	}
+   // (3,1,0,1)=(|,^,+,^)
+   private int evaluaFuncBool8(int char1, int char2, int char3, int char4, int char5) {
+      return ( char1 | char2 ) ^ ( char3 + char4 ) ^ char5;
+   }
 
-	//2997-(3,3,0,1),2998-(0,0,0,1),2998-(0,2,0,1),2998-(1,0,1,1),2998-(3,1,1,1),2999-(0,0,1,1),2999-(0,1,0,1),2999-(0,2,0,0),
+   // (3,3,0,1)=(|,|,+,^)
+   private int evaluaFuncBool9(int char1, int char2, int char3, int char4, int char5) {
+      return ( char1 | char2 ) | ( char3 + char4 ) ^ char5;
+   }
 
-	// (3,3,0,1)=(|,|,+,^)
-	private int evaluaFuncBool9(int char1, int char2, int char3, int char4, int char5) {
-		return ( char1 | char2 ) | ( char3 + char4 ) ^ char5;
-	}
-
-	// (0,0,0,1)=(+,+,+,^)
-	private int evaluaFuncBool10(int char1, int char2, int char3, int char4, int char5) {
-		return ( char1 + char2 ) + ( char3 + char4 ) ^ char5;
-	}
+   // (0,0,0,1)=(+,+,+,^)
+   private int evaluaFuncBool10(int char1, int char2, int char3, int char4, int char5) {
+      return ( char1 + char2 ) + ( char3 + char4 ) ^ char5;
+   }
 	
-	// (0,2,0,1)=(+,&,+,^)
-	private int evaluaFuncBool11(int char1, int char2, int char3, int char4, int char5) {
-		return ( char1 + char2 ) & ( char3 + char4 ) ^ char5;
-	}
+   // (0,2,0,1)=(+,&,+,^)
+   private int evaluaFuncBool11(int char1, int char2, int char3, int char4, int char5) {
+      return ( char1 + char2 ) & ( char3 + char4 ) ^ char5;
+   }
 	
-	// (1,0,1,1)=(^,+,^,^)
-	private int evaluaFuncBool12(int char1, int char2, int char3, int char4, int char5) {
-		return ( char1 ^ char2 ) + ( char3 ^ char4 ) ^ char5;
-	}
+   // (1,0,1,1)=(^,+,^,^)
+   private int evaluaFuncBool12(int char1, int char2, int char3, int char4, int char5) {
+      return ( char1 ^ char2 ) + ( char3 ^ char4 ) ^ char5;
+   }
 	
-	// (3,1,1,1)=(|,^,^,^)
-	private int evaluaFuncBool13(int char1, int char2, int char3, int char4, int char5) {
-		return ( char1 | char2 ) ^ ( char3 ^ char4 ) ^ char5;
-	}
+   // (3,1,1,1)=(|,^,^,^)
+   private int evaluaFuncBool13(int char1, int char2, int char3, int char4, int char5) {
+      return ( char1 | char2 ) ^ ( char3 ^ char4 ) ^ char5;
+   }
 
-	// (0,0,1,1)=(+,+,^,^)
-	private int evaluaFuncBool14(int char1, int char2, int char3, int char4, int char5) {
-		return ( char1 + char2 ) + ( char3 ^ char4 ) ^ char5;
-	}
+   // (0,0,1,1)=(+,+,^,^)
+   private int evaluaFuncBool14(int char1, int char2, int char3, int char4, int char5) {
+      return ( char1 + char2 ) + ( char3 ^ char4 ) ^ char5;
+   }
 
-	// (0,1,0,1)=(+,^,+,^)
-	private int evaluaFuncBool15(int char1, int char2, int char3, int char4, int char5) {
-		return ( char1 + char2 ) ^ ( char3 + char4 ) ^ char5;
-	}	
+   // (0,1,0,1)=(+,^,+,^)
+   private int evaluaFuncBool15(int char1, int char2, int char3, int char4, int char5) {
+      return ( char1 + char2 ) ^ ( char3 + char4 ) ^ char5;
+   }	
 	
-	// (0,2,0,0)=(+,&,+,+)
-	private int evaluaFuncBool16(int char1, int char2, int char3, int char4, int char5) {
-		return ( char1 + char2 ) & ( char3 + char4 ) + char5;
-	}
+   // (0,2,0,0)=(+,&,+,+)
+   private int evaluaFuncBool16(int char1, int char2, int char3, int char4, int char5) {
+      return ( char1 + char2 ) & ( char3 + char4 ) + char5;
+   }
 
    protected byte[] padBuffer() {
       int n = (int)(count % BLOCK_SIZE);
@@ -359,6 +320,11 @@ public class IterativeBoolean extends BaseHash {
       return result;
    }
 
+   /**
+    * <p>The result of the previously hash computing.</p>
+    *
+    * @return the output of the completed hash operation. (160-bit)
+    */
    protected byte[] getResult() {
       byte[] result = new byte[] {
          (byte) h0, (byte)(h0 >>> 8), (byte)(h0 >>> 16), (byte)(h0 >>> 24),
@@ -387,34 +353,28 @@ public class IterativeBoolean extends BaseHash {
    }
    
    public static void main( String[] args ) {
-	   String in = "abc";
-	   byte[] bites = in.getBytes();
+      String in = "abc";
+      byte[] bites = in.getBytes();
 
-	   IMessageDigest algorithm;
+      IMessageDigest algorithm;
       try {
           algorithm = new IterativeBoolean();
-    	  //algorithm = new MD5();
           algorithm.update( bites, 0, in.length() );
           byte[] md = algorithm.digest();
-//	          String exp = "900150983CD24FB0D6963F7D28E17F72";
-//	          harness.check(exp.equals(Util.toString(md)), "testABC");
           System.out.println( "hash("+in+")="+Util.toString(md) );
-          //System.out.println( "?"+ algorithm.selfTest() );
        } catch (Exception e) {
     	   e.printStackTrace();
        }
 		
-	   in = "abcd";
-	   bites = in.getBytes();
-	      try {
-	          algorithm = new IterativeBoolean();
-	          algorithm.update( bites, 0, in.length() );
-	          byte[] md = algorithm.digest();
-	          System.out.println( "hash("+in+")="+Util.toString(md) );
-	       } catch (Exception e) {
-	    	   e.printStackTrace();
-	       }
-	   
-
+      in = "abcd";
+      bites = in.getBytes();
+      try {
+    	   algorithm = new IterativeBoolean();
+    	   algorithm.update( bites, 0, in.length() );
+    	   byte[] md = algorithm.digest();
+    	   System.out.println( "hash("+in+")="+Util.toString(md) );
+      } catch (Exception e) {
+    	   e.printStackTrace();
+      }
    }
 }
