@@ -18,7 +18,7 @@ import gnu.crypto.util.Util;
  * </ol>
  *
  * @author Jorge Alberto Medina Rosas
- * @version $Revision: 1.7.2 $
+ * @version $Revision: 0.7.2 $
  */
 public class IterativeBoolean extends BaseHash {
 
