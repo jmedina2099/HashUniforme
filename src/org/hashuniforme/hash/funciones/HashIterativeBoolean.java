@@ -4,19 +4,23 @@ package org.hashuniforme.hash.funciones;
 public class HashIterativeBoolean implements FuncionHash {
 
 	private static final boolean DEBUG_PARTIAL_HASH = false;
+	private int rounds = 0;
 
 	public HashIterativeBoolean() {
 	}
 
 	@Override
 	public long getHash(String o) {
+		rounds  = 0;
 		long hash = getHashEval( o.toString() );
 		//System.out.println( "===> getHash = "+hash);
-		return (hash < 0 ? -hash : hash); // Return hash <int> without modulus size of table.
+		return (hash < 0 ? -hash : hash) + rounds; // Return hash <int> without modulus size of table.
 	}
 	
 
 	public long getHashEval( String o) {
+		
+		o = pad(o);
 
 		long hash = 0;
 		long char1=0,char2=0,char3=0,char4=0,char5=0;
@@ -103,6 +107,11 @@ public class HashIterativeBoolean implements FuncionHash {
 		return hash;	
 	}
 	
+	private String pad(String o) {
+		int size = o.length();
+		return o+size;
+	}
+	
 	public long evaluaFuncBool(Long char1, Long char2, Long char3, Long char4, Long char5) {
 		long hash = evaluaFuncBool1( char1,char2,char3,char4,char5 ) +
 				   evaluaFuncBool2( char1,char2,char3,char4,char5 ) +
@@ -124,6 +133,8 @@ public class HashIterativeBoolean implements FuncionHash {
 		if( DEBUG_PARTIAL_HASH ) {
 			System.out.println( "**** hashParcial = "+hash );
 		}
+		
+		rounds++;
 		
 		return hash;	
 	}
