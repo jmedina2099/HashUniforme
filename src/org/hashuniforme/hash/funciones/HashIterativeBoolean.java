@@ -12,9 +12,9 @@ public class HashIterativeBoolean implements FuncionHash {
 	@Override
 	public long getHash(String o) {
 		rounds  = 0;
-		long hash = getHashEval( o.toString() );
+		long hash = getHashEval( o.toString() ) + rounds;
 		//System.out.println( "===> getHash = "+hash);
-		return (hash < 0 ? -hash : hash) + rounds; // Return hash <int> without modulus size of table.
+		return (hash < 0 ? -hash : hash); // Return hash <int> without modulus size of table.
 	}
 	
 
@@ -89,8 +89,8 @@ public class HashIterativeBoolean implements FuncionHash {
 		sumaAnt2 += sumaAnt1;
 		sumaAnt1 += evaluaFuncBool( char1,char2,char3,char4,char5);
 		
-		hash = (sumaAnt1 << 48) |
-	               ((sumaAnt1+sumaAnt2 << 32) & 0xffffffffL) |
+		hash = ((sumaAnt1 << 48) & 0xffffffffffffffffL ) |
+	               ((sumaAnt1+sumaAnt2 << 32) & 0xffffffffffffffffL ) |
 	               ((sumaAnt1+sumaAnt2+sumaAnt3 << 16) & 0xffffffffL) |
 	               ((sumaAnt3+sumaAnt4+sumaAnt5) & 0xffffffffL);
 					
@@ -100,6 +100,7 @@ public class HashIterativeBoolean implements FuncionHash {
 			System.out.println( "**** sumAnt3 = "+sumaAnt3 );
 			System.out.println( "**** sumAnt2 = "+sumaAnt2 );
 			System.out.println( "**** sumAnt1 = "+sumaAnt1 );
+			System.out.println( "**** hash  = "+hash );
 			
 			System.out.println( "**** hashFinal = "+hash );
 		}
@@ -109,6 +110,13 @@ public class HashIterativeBoolean implements FuncionHash {
 	
 	private String pad(String o) {
 		int size = o.length();
+		
+		if( size < 3 ) {
+			for( int i=0; i<3-size; i++ ) {
+				o += "0";
+			}
+		}
+		
 		return o+size;
 	}
 	
